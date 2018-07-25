@@ -1,12 +1,25 @@
 #!groovy
 node {
     stage('Git checkout') { // for display purposes
-        git 'https://github.com/BushnevYuri/e2e-automation-pipeline.git'
+        git 'https://github.com/varapreddy/e2e-automation-pipeline.git'
     }
-    stage('Smoke') {
+    stage('Run Tests'){
+        try{
+            bat 'mvn clean verify'
+        }catch (err) {
+
+        } finally {
+            publishHTML (target: [
+                    reportDir: 'target/site/serenity',
+                    reportFiles: 'index.html',
+                    reportName: "Regression test report"
+            ])
+        }
+    }
+    stage('Smoke'){
         try {
-            sh "mvn clean verify -Dtags='type:Smoke'"
-        } catch (err) {
+            bat 'mvn clean verify -Dtags="type:Smoke"'
+        }catch (err) {
 
         } finally {
             publishHTML (target: [
@@ -16,10 +29,11 @@ node {
             ])
         }
     }
-    stage('API') {
-        try {
-            sh "mvn clean verify -Dtags='type:API'"
-        } catch (err) {
+    
+    stage('API'){
+        try{
+            bat 'mvn clean verify -Dtags="type:API"'
+        }catch (err) {
 
         } finally {
             publishHTML (target: [
@@ -29,10 +43,10 @@ node {
             ])
         }
     }
-    stage('UI') {
-        try {
-            sh "mvn clean verify -Dtags='type:UI'"
-        } catch (err) {
+    stage('UI'){
+        try{
+            bat 'mvn clean verify -Dtags="type:UI"'
+        }catch (err) {
 
         } finally {
             publishHTML (target: [
@@ -42,6 +56,8 @@ node {
             ])
         }
     }
+
+    
     stage('Results') {
         junit '**/target/failsafe-reports/*.xml'
     }
