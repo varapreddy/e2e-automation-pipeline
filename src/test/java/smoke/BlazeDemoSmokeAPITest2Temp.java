@@ -17,6 +17,7 @@ public class BlazeDemoSmokeAPITest2Temp {
     @Test
     @WithTag(type="type", name="Smoke")
     public void verifyFlightsSearchWithAPI() {
+    	System.out.println("vara");
         blazeDemoAPISteps2Temp.verifyThatAppIsRunning();
     }
 }
