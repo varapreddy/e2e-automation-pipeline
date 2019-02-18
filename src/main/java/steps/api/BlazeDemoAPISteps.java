@@ -7,6 +7,6 @@ import static net.serenitybdd.rest.SerenityRest.given;
 public class BlazeDemoAPISteps {
     @Step
     public void verifyThatAppIsRunning() {
-        given().get("http://blazedemo.com").then().statusCode(203);
+        given().get("http://blazedemo.com").then().statusCode(200);
     }
 }
